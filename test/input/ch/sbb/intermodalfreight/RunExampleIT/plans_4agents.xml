@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE population SYSTEM "http://www.matsim.org/files/dtd/population_v6.dtd">
+
+<population>
+
+<!-- ====================================================================== -->
+
+        <person id="container_0_car">
+                <attributes>
+                        <attribute name="commodity_group" class="java.lang.Integer">3</attribute>
+                        <attribute name="subpopulation" class="java.lang.String">TEU</attribute>
+                        <attribute name="transport_mode" class="java.lang.String">Strasse</attribute>
+                        <attribute name="transport_type" class="java.lang.String">Binnen</attribute>
+						<attribute name="initialArrival" class="java.lang.Double">115031.0</attribute>
+						<attribute name="initialDeparture" class="java.lang.Double">108000.0</attribute>
+                </attributes>
+                <plan selected="yes">
+                        <activity type="freight_origin" x="2600153.0" y="1198505.0" end_time="30:00:00" >
+                        </activity>
+                        <leg mode="car">
+                        </leg>
+                        <activity type="freight_destination" x="2740639.0" y="1252542.0" >
+                        </activity>
+                </plan>
+
+        </person>
+
+        <person id="container_0_pt">
+                <attributes>
+                        <attribute name="commodity_group" class="java.lang.Integer">3</attribute>
+                        <attribute name="subpopulation" class="java.lang.String">TEU</attribute>
+                        <attribute name="transport_mode" class="java.lang.String">Strasse</attribute>
+                        <attribute name="transport_type" class="java.lang.String">Binnen</attribute>
+						<attribute name="initialArrival" class="java.lang.Double">115031.0</attribute>
+						<attribute name="initialDeparture" class="java.lang.Double">108000.0</attribute>
+                </attributes>
+                <plan selected="yes">
+                        <activity type="freight_origin" x="2600153.0" y="1198505.0" end_time="30:00:00" >
+                        </activity>
+                        <leg mode="pt">
+                        </leg>
+                        <activity type="freight_destination" x="2740639.0" y="1252542.0" >
+                        </activity>
+                </plan>
+
+        </person>
+		
+		 <person id="container_1_car">
+                <attributes>
+                        <attribute name="commodity_group" class="java.lang.Integer">7</attribute>
+                        <attribute name="subpopulation" class="java.lang.String">TEU</attribute>
+                        <attribute name="transport_mode" class="java.lang.String">Strasse</attribute>
+                        <attribute name="transport_type" class="java.lang.String">Import</attribute>
+						<attribute name="initialArrival" class="java.lang.Double">137193.0</attribute>
+						<attribute name="initialDeparture" class="java.lang.Double">131815.0</attribute>
+                </attributes>
+                <plan selected="yes">
+                        <activity type="freight_origin" x="2584373.0" y="1110335.0" end_time="36:36:55" >
+                        </activity>
+                        <leg mode="car">
+                        </leg>
+                        <activity type="freight_destination" x="2558781.0" y="1204295.0" >
+                        </activity>
+                </plan>
+
+        </person>
+		
+		<person id="container_1_pt">
+                <attributes>
+                        <attribute name="commodity_group" class="java.lang.Integer">7</attribute>
+                        <attribute name="subpopulation" class="java.lang.String">TEU</attribute>
+                        <attribute name="transport_mode" class="java.lang.String">Strasse</attribute>
+                        <attribute name="transport_type" class="java.lang.String">Import</attribute>
+						<attribute name="initialArrival" class="java.lang.Double">137193.0</attribute>
+						<attribute name="initialDeparture" class="java.lang.Double">131815.0</attribute>
+                </attributes>
+                <plan selected="yes">
+                        <activity type="freight_origin" x="2584373.0" y="1110335.0" end_time="36:36:55" >
+                        </activity>
+                        <leg mode="pt">
+                        </leg>
+                        <activity type="freight_destination" x="2558781.0" y="1204295.0" >
+                        </activity>
+                </plan>
+
+        </person>
+
+</population>

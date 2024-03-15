@@ -1,0 +1,4 @@
+name;short_name;header;x;y;modes;capacities;opening_hour;closing_hour
+t1;t1;t1;0;-8000;carKV_container, carKV_otherMode;40.0, 100.0;0,5;24,18
+t2;t2;t2;50000;-8000;carKV_container, carKV_otherMode;40.0, 100.0;3,5;20,18
+t3;t3;t3;120000;-8000;carKV_container, carKV_otherMode;6.0, 100.0;0,5;24,18

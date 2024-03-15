@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE population SYSTEM "http://www.matsim.org/files/dtd/population_v6.dtd">
+
+<population desc="population written from streaming">
+
+	<attributes>
+		<attribute name="coordinateReferenceSystem" class="java.lang.String">Atlantis</attribute>
+	</attributes>
+	
+	<!-- ====================================================================== -->
+
+	<person id="container_sattelauflieger1">
+		<attributes>
+			<attribute name="initialDeparture" class="java.lang.Double">19800.0</attribute>
+			<attribute name="initialArrival" class="java.lang.Double">44460.0</attribute>
+			<attribute name="subpopulation" class="java.lang.String">sattelauflieger</attribute>
+		</attributes>
+		<plan>
+			<activity type="freight-origin" x="50" y="-10000" end_time="05:29:50" />
+			<leg mode="pt"/>
+			<activity type="freight-destination" x="120050" y="-10000" />
+		</plan>
+	</person>
+	
+	<!-- ====================================================================== -->
+
+	<person id="container_sattelauflieger2">
+		<attributes>
+			<attribute name="initialDeparture" class="java.lang.Double">19800.0</attribute>
+			<attribute name="initialArrival" class="java.lang.Double">44460.0</attribute>
+			<attribute name="subpopulation" class="java.lang.String">sattelauflieger</attribute>
+		</attributes>
+		<plan>
+			<activity type="freight-origin" x="50" y="-10000" end_time="05:29:40" />
+			<leg mode="pt"/>
+			<activity type="freight-destination" x="120050" y="-10000" />
+		</plan>
+	</person>
+	
+	<!-- ====================================================================== -->
+
+	<person id="container_wechselbehaelter1">
+		<attributes>
+			<attribute name="initialDeparture" class="java.lang.Double">19800.0</attribute>
+			<attribute name="initialArrival" class="java.lang.Double">44460.0</attribute>
+			<attribute name="subpopulation" class="java.lang.String">wechselbehaelter</attribute>
+		</attributes>
+		<plan>
+			<activity type="freight-origin" x="50" y="-10000" end_time="05:29:30" />
+			<leg mode="pt"/>
+			<activity type="freight-destination" x="120050" y="-10000" />
+		</plan>
+	</person>
+	
+	<!-- ====================================================================== -->
+
+	<person id="container_wechselbehaelter2">
+		<attributes>
+			<attribute name="initialDeparture" class="java.lang.Double">19800.0</attribute>
+			<attribute name="initialArrival" class="java.lang.Double">44460.0</attribute>
+			<attribute name="subpopulation" class="java.lang.String">wechselbehaelter</attribute>
+		</attributes>
+		<plan>
+			<activity type="freight-origin" x="50" y="-10000" end_time="05:29:20" />
+			<leg mode="pt"/>
+			<activity type="freight-destination" x="120050" y="-10000" />
+		</plan>
+	</person>
+	
+<!-- ====================================================================== -->
+	
+	<person id="container1">
+		<attributes>
+			<attribute name="initialDeparture" class="java.lang.Double">19800.0</attribute>
+			<attribute name="initialArrival" class="java.lang.Double">44460.0</attribute>
+			<attribute name="subpopulation" class="java.lang.String">TEU</attribute>
+		</attributes>
+		<plan>
+			<activity type="freight-origin" x="50" y="-10000" end_time="05:30:00" />
+			<leg mode="pt"/>
+			<activity type="freight-destination" x="120050" y="-10000" />
+		</plan>
+	</person>
+	
+<!-- ====================================================================== -->
+	
+	<person id="container2">
+		<attributes>
+			<attribute name="initialDeparture" class="java.lang.Double">19800.0</attribute>
+			<attribute name="initialArrival" class="java.lang.Double">36000.0</attribute>
+			<attribute name="subpopulation" class="java.lang.String">TEU</attribute>
+		</attributes>
+		<plan>
+			<activity type="freight-origin" x="50" y="-10000" end_time="05:30:10" />
+			<leg mode="pt"/>
+			<activity type="freight-destination" x="120050" y="-10000" />
+		</plan>
+	</person>
+	
+<!-- ====================================================================== -->
+	
+	<person id="container3">
+		<attributes>
+			<attribute name="initialDeparture" class="java.lang.Double">0.0</attribute>
+			<attribute name="initialArrival" class="java.lang.Double">86400</attribute>
+			<attribute name="subpopulation" class="java.lang.String">TEU</attribute>
+		</attributes>
+		<plan>
+			<activity type="freight-origin" x="50" y="-10000" end_time="05:30:20" />
+			<leg mode="pt"/>
+			<activity type="freight-destination" x="120050" y="-10000" />
+		</plan>
+	</person>
+		
+<!-- ====================================================================== -->
+
+	<person id="container4">
+		<attributes>
+			<attribute name="initialDeparture" class="java.lang.Double">0.0</attribute>
+			<attribute name="initialArrival" class="java.lang.Double">86400</attribute>
+			<attribute name="subpopulation" class="java.lang.String">TEU</attribute>
+		</attributes>
+		<plan>
+			<activity type="freight-origin" x="50" y="-10000" end_time="05:30:30" />
+			<leg mode="pt"/>
+			<activity type="freight-destination" x="120050" y="-10000" />
+		</plan>
+	</person>
+
+<!-- ====================================================================== -->
+
+	<person id="container5">
+		<attributes>
+			<attribute name="initialDeparture" class="java.lang.Double">28800.0</attribute>
+			<attribute name="initialArrival" class="java.lang.Double">54000</attribute>
+			<attribute name="subpopulation" class="java.lang.String">TEU</attribute>
+		</attributes>
+		<plan>
+			<activity type="freight-origin" x="50" y="-10000" end_time="08:15:00" />
+			<leg mode="pt"/>
+			<activity type="freight-destination" x="120050" y="-10000" />
+		</plan>
+	</person>
+
+<!-- ====================================================================== -->
+
+	<person id="container6">
+		<attributes>
+			<attribute name="initialDeparture" class="java.lang.Double">0.0</attribute>
+			<attribute name="initialArrival" class="java.lang.Double">86400</attribute>
+			<attribute name="subpopulation" class="java.lang.String">TEU</attribute>
+		</attributes>
+		<plan>
+			<activity type="freight-origin" x="50" y="-10000" end_time="08:15:01" />
+			<leg mode="pt"/>
+			<activity type="freight-destination" x="120050" y="-10000" />
+		</plan>
+	</person>
+	
+<!-- ====================================================================== -->
+
+	<person id="container7">
+		<attributes>
+			<attribute name="initialDeparture" class="java.lang.Double">0.0</attribute>
+			<attribute name="initialArrival" class="java.lang.Double">86400</attribute>
+			<attribute name="subpopulation" class="java.lang.String">TEU</attribute>
+		</attributes>
+		<plan>
+			<activity type="freight-origin" x="50" y="-10000" end_time="08:15:02" />
+			<leg mode="pt"/>
+			<activity type="freight-destination" x="120050" y="-10000" />
+		</plan>
+	</person>
+	
+<!-- ====================================================================== -->
+	
+	<person id="container8">
+		<attributes>
+			<attribute name="initialDeparture" class="java.lang.Double">19800.0</attribute>
+			<attribute name="initialArrival" class="java.lang.Double">44460.0</attribute>
+			<attribute name="subpopulation" class="java.lang.String">TEU</attribute>
+		</attributes>
+		<plan>
+			<activity type="freight-origin" x="50" y="-10000" end_time="05:30:00" />
+			<leg mode="car"/>
+			<activity type="freight-destination" x="120050" y="-10000" />
+		</plan>
+	</person>
+	
+<!-- ====================================================================== -->
+	
+	<person id="container9">
+		<attributes>
+			<attribute name="initialDeparture" class="java.lang.Double">19800.0</attribute>
+			<attribute name="initialArrival" class="java.lang.Double">44460.0</attribute>
+			<attribute name="subpopulation" class="java.lang.String">TEU</attribute>
+		</attributes>
+		<plan>
+			<activity type="freight-origin" x="50" y="-10000" end_time="05:31:00" />
+			<leg mode="car"/>
+			<activity type="freight-destination" x="120050" y="-10000" />
+		</plan>
+	</person>
+
+<!-- ====================================================================== -->
+
+</population>

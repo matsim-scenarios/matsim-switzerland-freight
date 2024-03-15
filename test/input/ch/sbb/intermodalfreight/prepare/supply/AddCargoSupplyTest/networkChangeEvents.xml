@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<networkChangeEvents xmlns="http://www.matsim.org/files/dtd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.matsim.org/files/dtd http://www.matsim.org/files/dtd/networkChangeEvents.xsd">
+
+		<!--
+		some speed-related network change events
+		should survive and be copied to the final network change events file
+		-->
+		
+        <networkChangeEvent startTime="18:00:00">
+                <link refId="2-3"/>
+                <freespeed type="absolute" value="1.0"/>
+        </networkChangeEvent>
+
+        <networkChangeEvent startTime="19:15:00">
+                <link refId="2-3"/>
+                <freespeed type="absolute" value="27.78"/>
+        </networkChangeEvent>
+		
+		<!-- emulate "Nachtfahrverbot" and see if road agents are actually affected -->
+		
+		<networkChangeEvent startTime="09:30:00">
+			<link refId="4-5"/>
+			<flowCapacity type="absolute" value="0.0"/>
+			<lanes type="absolute" value="0.0"/>
+		</networkChangeEvent>
+
+		<networkChangeEvent startTime="10:30:00">
+			<link refId="4-5"/>
+			<flowCapacity type="absolute" value="0.2777777777777778"/>
+			<lanes type="absolute" value="3.0"/>
+		</networkChangeEvent>
+	
+</networkChangeEvents>

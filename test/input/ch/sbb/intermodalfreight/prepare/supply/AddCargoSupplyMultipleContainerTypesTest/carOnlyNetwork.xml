@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE network SYSTEM "http://www.matsim.org/files/dtd/network_v1.dtd">
+<!-- 
+																	   			
+
+			 (1)=====(2)====(3)===>(4)=====>(5)
+							  
+	   
+	   ==== road
+	   #### rail
+
+ -->
+<network name="test network">
+   <nodes>
+      <node id="1" x="0" y="-10000"/>
+      <node id="2" x="100" y="-10000"/>
+      <node id="3" x="60000" y="-10000"/>
+      <node id="4" x="120000" y="-10000"/>
+      <node id="5" x="120100" y="-10000"/>   
+            
+   </nodes>
+   <links capperiod="01:00:00">
+      <link id="1-2" from="1" to="2" modes="car" length="100" capacity="1000" freespeed="27.78" permlanes="3"  />
+      <link id="2-3" from="2" to="3" modes="car" length="60000" capacity="1000" freespeed="27.78" permlanes="3"  />
+      <link id="3-4" from="3" to="4" modes="car" length="60000" capacity="1000" freespeed="27.78" permlanes="3"  />
+      <link id="4-5" from="4" to="5" modes="car" length="100" capacity="1000" freespeed="27.78" permlanes="3"  /> 
+      
+      <link id="2-1" from="2" to="1" modes="car" length="100" capacity="1000" freespeed="27.78" permlanes="3"  />
+      <link id="3-2" from="3" to="2" modes="car" length="60000" capacity="1000" freespeed="27.78" permlanes="3"  />
+      <link id="4-3" from="4" to="3" modes="car" length="60000" capacity="1000" freespeed="27.78" permlanes="3"  />         
+      <link id="5-4" from="5" to="4" modes="car" length="100" capacity="1000" freespeed="27.78" permlanes="3"  />         
+   </links>
+</network>
