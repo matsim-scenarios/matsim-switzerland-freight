@@ -1,4 +1,4 @@
-# Intermodal Freight Transport Switzerland Scenario
+# MATSim Switzerland Freight Scenario
 
 ![Switzerland MATSim network and container agents](docs/img/visualization_ch_network.png "Switzerland MATSim network and container agents")
 
@@ -13,7 +13,7 @@ Developers/Contributors: Annick Noll, Merlin Unterfinger, Thomas Hettinger, Davi
 
 ### Model features
 
-* The model accounts for two modes of transportation: (1) The road only mode and (2) intermodal road and rail transport (combined transport, in German: kombinierter Verkehr, short: KV).
+* The current version of the model accounts for two modes of transportation: (1) The road only mode and (2) intermodal road and rail transport (combined transport, in German: kombinierter Verkehr, short: KV).
 * Each container is modeled as an individual agent which follows a cost minimization approach.
 * The transport supply consists of the road network, the cargo train schedule and the intermodal terminals.
 * The simulation accounts for dynamic queuing at terminals by modeling a (1) train-stack queue and a (2) truck-stack queue. Furthermore, trains have a maximum loading capacity.
