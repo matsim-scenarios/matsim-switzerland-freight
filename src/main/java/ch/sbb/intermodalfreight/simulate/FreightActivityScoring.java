@@ -12,8 +12,8 @@ import org.matsim.core.scoring.functions.ScoringParameters;
 /**
  * 
  * A simplistic activity scoring approach which consists of
- *  - a penalty (fixed amount) for arriving too late
- *  - a penalty (fixed amount) for departing too early
+ *  - a penalty (fixed amount + delay-dependent) for arriving too late
+ *  - a penalty (fixed amount + delay-dependent) for departing too early
  *  - a reward (fixed amount) for arriving right on time or early
  * 
  * @author ikaddoura
@@ -92,7 +92,12 @@ public class FreightActivityScoring implements org.matsim.core.scoring.SumScorin
 				double lateArrival = arrival - desiredArrival;
 				if (lateArrival > tolerance) {
 					// arriving later --> penalty
+					// fix amount
 					scoreTmp += ifCfg.getArrivingLateUtility();
+					// delay-dependent amount
+					double timeAfterToleranceSec = lateArrival - tolerance;
+					scoreTmp += timeAfterToleranceSec * ifCfg.getArrivingLateUtilityPerHour() / 3600.;
+					
 				} else {
 					// arriving earlier or within tolerance --> ok
 					scoreTmp += ifCfg.getArrivingRightOnTimeUtility();
@@ -116,7 +121,11 @@ public class FreightActivityScoring implements org.matsim.core.scoring.SumScorin
 				double earlierDeparture = desiredDeparture - departure;		
 				if (earlierDeparture > tolerance) {
 					// departing earlier --> penalty
+					// fix amount
 					scoreTmp += ifCfg.getDepartingEarlyUtiliy();
+					// delay-specific amount
+					double timeAfterToleranceSec = earlierDeparture - tolerance;
+					scoreTmp += timeAfterToleranceSec * ifCfg.getDepartingEarlyUtilityPerHour() / 3600.;
 				} else {
 					// departing later or within tolerance --> ok
 				}
