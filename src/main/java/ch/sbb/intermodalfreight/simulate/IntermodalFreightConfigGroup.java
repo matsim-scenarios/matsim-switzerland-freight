@@ -39,11 +39,16 @@ public class IntermodalFreightConfigGroup extends ReflectiveConfigGroup {
 	private double arrivingLateUtility = -1000.;
 	private double departingEarlyUtiliy = -1000.;
 	private double arrivingRightOnTimeUtility = 1000.;
+	private double arrivingLateUtilityPerHour = -0.;
+	private double departingEarlyUtilityPerHour = -0.;
+	
 	private double tolerance = 3600.;
+	private double additionalToleranceForImportExport = 0.;
+
 	private double carPenaltyNight = -1000.;
 	private double departureUtility = -2000.;
 	private double arrivalUtility = 2000.;
-	private double additionalToleranceForImportExport = 0.;
+	
 	private TerminalCapacityApproach terminalCapacityApproach = TerminalCapacityApproach.WithoutCapacityReduction;
 	private CarRoutingApproach carRoutingApproach = CarRoutingApproach.Freespeed;
 	
@@ -145,6 +150,26 @@ public class IntermodalFreightConfigGroup extends ReflectiveConfigGroup {
 	@StringSetter( "carRoutingApproach" )
 	public void setCarRoutingApproach(CarRoutingApproach carRoutingApproach) {
 		this.carRoutingApproach = carRoutingApproach;
+	}
+
+	@StringGetter( "arrivingLateUtilityPerHour" )
+	public double getArrivingLateUtilityPerHour() {
+		return arrivingLateUtilityPerHour;
+	}
+
+	@StringSetter( "arrivingLateUtilityPerHour" )
+	public void setArrivingLateUtilityPerHour(double arrivingLateUtilityPerHour) {
+		this.arrivingLateUtilityPerHour = arrivingLateUtilityPerHour;
+	}
+
+	@StringGetter( "departingEarlyUtilityPerHour" )
+	public double getDepartingEarlyUtilityPerHour() {
+		return departingEarlyUtilityPerHour;
+	}
+
+	@StringSetter( "departingEarlyUtilityPerHour" )
+	public void setDepartingEarlyUtilityPerHour(double departingEarlyUtilityPerHour) {
+		this.departingEarlyUtilityPerHour = departingEarlyUtilityPerHour;
 	}
 	
 	
