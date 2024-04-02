@@ -23,9 +23,16 @@ public class FreightActivityScoring implements org.matsim.core.scoring.SumScorin
 
 	public final static String INITIAL_ARRIVAL_TIME = "initialArrival";
 	public final static String INITIAL_DEPARTURE_TIME = "initialDeparture";
-	private final static String ATTRIBUTE_IMPORT = "Import";
-	private final static String ATTRIBUTE_EXPORT = "Export";
 	
+	// some hard-coded person attributes which trigger wider time tolerances for import/export
+	private final static String ATTRIBUTE_TRANSPORT_TYPE_KEY = "transport_type";
+	private final static String ATTRIBUTE_TRANSPORT_TYPE_IMPORT = "Import";
+	private final static String ATTRIBUTE_TRANSPORT_TYPE_EXPORT = "Export";
+	
+	// some hard-coded person attributes which trigger wider time tolerances for empty containers
+	private final static String ATTRIBUTE_COMMODITY_GROUP_KEY = "commodity_group";
+	private final static int ATTRIBUTE_COMMODITY_GROUP_EMPTY_CONTAINER = -1;
+		
 	private final ScoringParameters params;
 	private final IntermodalFreightConfigGroup ifCfg;
 	private final Double desiredArrival;
@@ -136,15 +143,32 @@ public class FreightActivityScoring implements org.matsim.core.scoring.SumScorin
 	}
 
 	private double getTolerance(Person person) {
+		
+		// base value
 		double tolerance = ifCfg.getTolerance();
 		
-		Object transportTypeObject = person.getAttributes().getAttribute("transport_type");
+		// increase for import/export
+		{
+			Object transportTypeObject = person.getAttributes().getAttribute(ATTRIBUTE_TRANSPORT_TYPE_KEY);
+			if (transportTypeObject != null) {
+				String transportType = (String) transportTypeObject;
+				if (transportType.equalsIgnoreCase(ATTRIBUTE_TRANSPORT_TYPE_EXPORT) || transportType.equalsIgnoreCase(ATTRIBUTE_TRANSPORT_TYPE_IMPORT)) {
+					// increase tolerance
+					tolerance = tolerance + ifCfg.getAdditionalToleranceForImportExport();
+				}
+			}
+		}
 		
-		if (transportTypeObject != null) {
-			String transportType = (String) transportTypeObject;
-			if (transportType.equalsIgnoreCase(ATTRIBUTE_EXPORT) || transportType.equalsIgnoreCase(ATTRIBUTE_IMPORT)) {
-				// increase tolerance
-				tolerance = tolerance + ifCfg.getAdditionalToleranceForImportExport();
+		
+		// increase for empty containers
+		{
+			Object commodityGroupObject = person.getAttributes().getAttribute(ATTRIBUTE_COMMODITY_GROUP_KEY);
+			if (commodityGroupObject != null) {
+				int commodityGroup = (int) commodityGroupObject;
+				if (commodityGroup == ATTRIBUTE_COMMODITY_GROUP_EMPTY_CONTAINER) {
+					// increase tolerance
+					tolerance = tolerance + ifCfg.getAdditionalToleranceForEmptyContainers();
+				}
 			}
 		}
 		

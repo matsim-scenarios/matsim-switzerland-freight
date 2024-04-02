@@ -44,6 +44,7 @@ public class IntermodalFreightConfigGroup extends ReflectiveConfigGroup {
 	
 	private double tolerance = 3600.;
 	private double additionalToleranceForImportExport = 0.;
+	private double additionalToleranceForEmptyContainers = 0.;
 
 	private double carPenaltyNight = -1000.;
 	private double departureUtility = -2000.;
@@ -170,6 +171,16 @@ public class IntermodalFreightConfigGroup extends ReflectiveConfigGroup {
 	@StringSetter( "departingEarlyUtilityPerHour" )
 	public void setDepartingEarlyUtilityPerHour(double departingEarlyUtilityPerHour) {
 		this.departingEarlyUtilityPerHour = departingEarlyUtilityPerHour;
+	}
+
+	@StringGetter( "additionalToleranceForEmptyContainers" )
+	public double getAdditionalToleranceForEmptyContainers() {
+		return additionalToleranceForEmptyContainers;
+	}
+
+	@StringSetter( "additionalToleranceForEmptyContainers" )
+	public void setAdditionalToleranceForEmptyContainers(double additionalToleranceForEmptyContainers) {
+		this.additionalToleranceForEmptyContainers = additionalToleranceForEmptyContainers;
 	}
 	
 	
