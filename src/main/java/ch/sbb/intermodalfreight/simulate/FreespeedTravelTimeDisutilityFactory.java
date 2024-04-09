@@ -2,7 +2,7 @@ package ch.sbb.intermodalfreight.simulate;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.matsim.core.config.groups.PlanCalcScoreConfigGroup;
+import org.matsim.core.config.groups.ScoringConfigGroup;
 import org.matsim.core.router.costcalculators.FreespeedTravelTimeAndDisutility;
 import org.matsim.core.router.costcalculators.TravelDisutilityFactory;
 import org.matsim.core.router.util.TravelDisutility;
@@ -21,7 +21,7 @@ public class FreespeedTravelTimeDisutilityFactory implements TravelDisutilityFac
 	private final double scaledMarginalUtilityOfPerforming;
 	private final double scaledMarginalUtilityOfDistance;
 	
-	public FreespeedTravelTimeDisutilityFactory(String mode, PlanCalcScoreConfigGroup planCalcScore) {
+	public FreespeedTravelTimeDisutilityFactory(String mode, ScoringConfigGroup planCalcScore) {
 		
 		log.info("Using the freespeed travel time and distance based costs for mode " + mode);
 		

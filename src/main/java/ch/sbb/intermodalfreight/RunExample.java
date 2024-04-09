@@ -44,9 +44,9 @@ public class RunExample {
         // Adjust the config file and start the simulation run.
         String[] arguments = {project.getDirectory().getMatsimConfigFilePath().toString()};
         Config config = RunIntermodalFreightScenario.prepareConfig(arguments);
-        config.controler().setRunId(project.getMatsimRun().getId());
-        config.controler().setOutputDirectory(project.getDirectory().getMatsimOutputPath().toString());
-        config.controler().setOverwriteFileSetting(OverwriteFileSetting.deleteDirectoryIfExists);
+        config.controller().setRunId(project.getMatsimRun().getId());
+        config.controller().setOutputDirectory(project.getDirectory().getMatsimOutputPath().toString());
+        config.controller().setOverwriteFileSetting(OverwriteFileSetting.deleteDirectoryIfExists);
 
         IntermodalFreightConfigGroup ifCfg = (IntermodalFreightConfigGroup) config.getModules()
                 .get(IntermodalFreightConfigGroup.GROUP_NAME);

@@ -25,6 +25,7 @@ import org.matsim.core.config.Config;
 import org.matsim.core.config.ConfigUtils;
 import org.matsim.core.controler.AbstractModule;
 import org.matsim.core.controler.Controler;
+import org.matsim.core.router.AnalysisMainModeIdentifier;
 import org.matsim.core.scenario.ScenarioUtils;
 import org.matsim.core.utils.misc.Time;
 
@@ -72,7 +73,7 @@ public class RunIntermodalFreightScenario {
 		Config config = ConfigUtils.loadConfig(args, new IntermodalFreightConfigGroup());
 		// config.controler().setOverwriteFileSetting( OverwriteFileSetting.deleteDirectoryIfExists );		
 		
-		if (config.controler().getFirstIteration() != 0) {
+		if (config.controller().getFirstIteration() != 0) {
 			throw new RuntimeException("The simulation is expected to start with iteration 0, otherwise the initialization of desired arrival times does not work. Aborting...");
 		}
 		
@@ -120,7 +121,7 @@ public class RunIntermodalFreightScenario {
         
         // To use the deterministic pt simulation (Part 2 of 2):
         controler.configureQSimComponents(components -> {
-        	SBBTransitEngineQSimModule.configure(components);
+        	new SBBTransitEngineQSimModule().configure(components);
         });
         
         // replace activity scoring
@@ -132,6 +133,9 @@ public class RunIntermodalFreightScenario {
         controler.addOverridingModule(new AbstractModule() {	
 			@Override
 			public void install() {
+				
+				// use our own analysis main mode identifier
+				this.bind(AnalysisMainModeIdentifier.class).to(IntermodalFreightAnalysisMainModeIdentifier.class);
 				
 				// store initial arrival times and write into person plan (if not provided in the attributes)
 				FreightStoreInitialTimes initialTimes = new FreightStoreInitialTimes(scenario);
@@ -154,14 +158,16 @@ public class RunIntermodalFreightScenario {
 					// use the freespeed for routing, because this is how trucks tend to do their routing; congestion effects will be ignored which is fine
 					// because we don't want to have trucks on some mountain roads
 					
-					for (String mode : controler.getConfig().plansCalcRoute().getNetworkModes()) {
-						addTravelDisutilityFactoryBinding(mode).toInstance(new FreespeedTravelTimeDisutilityFactory(mode, controler.getConfig().planCalcScore()));
+					for (String mode : controler.getConfig().routing().getNetworkModes()) {
+						addTravelDisutilityFactoryBinding(mode).toInstance(new FreespeedTravelTimeDisutilityFactory(mode, controler.getConfig().scoring()));
 					}
 				} else {
 					throw new RuntimeException("Unknown car routing approach. Aborting...");
 				}
+				
 			}
 		});
+        
         
         // required for the queue handling
         controler.addOverridingQSimModule(new SignalsQSimModule());

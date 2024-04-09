@@ -29,9 +29,9 @@ import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
-import org.junit.Assert;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.matsim.api.core.v01.Coord;
 import org.matsim.api.core.v01.Id;
 import org.matsim.api.core.v01.Scenario;
@@ -74,7 +74,7 @@ import ch.sbb.intermodalfreight.simulate.RunIntermodalFreightScenario;
  */
 public class AddCargoSupplyTest {
 	
-	@Rule public MatsimTestUtils utils = new MatsimTestUtils() ;
+	@RegisterExtension public MatsimTestUtils utils = new MatsimTestUtils() ;
 	
 	/**
 	 * Only adds a single cargo connection without running the simulation.
@@ -164,11 +164,11 @@ public class AddCargoSupplyTest {
 				
 				TransitRoute route = line.getRoutes().get(Id.create("line1_route1_0", TransitRoute.class));
 				
-				Assert.assertEquals("Schedule has changed.", 0., route.getStops().get(0).getArrivalOffset().seconds(), MatsimTestUtils.EPSILON);
-				Assert.assertEquals("Schedule has changed.", 7200., route.getStops().get(0).getDepartureOffset().seconds(), MatsimTestUtils.EPSILON);
-				Assert.assertEquals("Schedule has changed.", 3 * 3600. + 0.5 * 3600., route.getStops().get(1).getArrivalOffset().seconds(), MatsimTestUtils.EPSILON);
-				Assert.assertEquals("Schedule has changed.", 5 * 3600. + 0.5 * 3600., route.getStops().get(1).getDepartureOffset().seconds(), MatsimTestUtils.EPSILON);
-				Assert.assertEquals("Schedule has changed.", 8 * 3600., route.getStops().get(2).getArrivalOffset().seconds(), MatsimTestUtils.EPSILON);
+				Assertions.assertEquals(0., route.getStops().get(0).getArrivalOffset().seconds(), MatsimTestUtils.EPSILON);
+				Assertions.assertEquals(7200., route.getStops().get(0).getDepartureOffset().seconds(), MatsimTestUtils.EPSILON);
+				Assertions.assertEquals(3 * 3600. + 0.5 * 3600., route.getStops().get(1).getArrivalOffset().seconds(), MatsimTestUtils.EPSILON);
+				Assertions.assertEquals(5 * 3600. + 0.5 * 3600., route.getStops().get(1).getDepartureOffset().seconds(), MatsimTestUtils.EPSILON);
+				Assertions.assertEquals(8 * 3600., route.getStops().get(2).getArrivalOffset().seconds(), MatsimTestUtils.EPSILON);
 			}	
 			
 		} catch ( Exception ee ) {
@@ -176,7 +176,7 @@ public class AddCargoSupplyTest {
 			LogManager.getLogger(this.getClass()).fatal("there was an exception: \n" + ee ) ;
 
 			// if one catches an exception, then one needs to explicitly fail the test:
-			Assert.fail();
+			Assertions.fail();
 		}
 	}
 
@@ -339,35 +339,35 @@ public class AddCargoSupplyTest {
 			Scenario scenarioForTesting = run();
 			
 			// uses train + arrives on time
-			Assert.assertEquals("Scores have changed.", 780.2816162099284, scenarioForTesting.getPopulation().getPersons().get(Id.createPersonId("container1")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
+			Assertions.assertEquals(780.2816162099284, scenarioForTesting.getPopulation().getPersons().get(Id.createPersonId("container1")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
 			
 			// uses train + arrives on time, slightly reduced score because this container is at a later position in the queue and needs more time
-			Assert.assertEquals("Scores have changed.", 774.976060654373, scenarioForTesting.getPopulation().getPersons().get(Id.createPersonId("container10")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);			
+			Assertions.assertEquals(774.976060654373, scenarioForTesting.getPopulation().getPersons().get(Id.createPersonId("container10")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);			
 			
 			// uses train + arrives on time, even more reduced score because this container is at a later position in the queue and needs more time
-			Assert.assertEquals("Scores have changed.", 762.726060654373, scenarioForTesting.getPopulation().getPersons().get(Id.createPersonId("container15")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);			
+			Assertions.assertEquals(762.726060654373, scenarioForTesting.getPopulation().getPersons().get(Id.createPersonId("container15")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);			
 					
 			// uses train + arrives delayed (inflexible container)
-			Assert.assertEquals("Scores have changed.", -1223.8433837900716, scenarioForTesting.getPopulation().getPersons().get(Id.createPersonId("container8_inflexible")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
+			Assertions.assertEquals(-1223.8433837900716, scenarioForTesting.getPopulation().getPersons().get(Id.createPersonId("container8_inflexible")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
 
 			// road user traveling before road closure
-			Assert.assertEquals("Scores have changed.", 549.2444444444445, scenarioForTesting.getPopulation().getPersons().get(Id.createPersonId("container9_road_before_closing_road")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
+			Assertions.assertEquals(549.2444444444445, scenarioForTesting.getPopulation().getPersons().get(Id.createPersonId("container9_road_before_closing_road")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
 
 			// road user traveling during road closure, should be delayed (requires more time on the road than the other road users)
-			Assert.assertEquals("Scores have changed.", -1473.2208333333333, scenarioForTesting.getPopulation().getPersons().get(Id.createPersonId("container10_road_affected_by_road_closure")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
+			Assertions.assertEquals(-1473.2208333333333, scenarioForTesting.getPopulation().getPersons().get(Id.createPersonId("container10_road_affected_by_road_closure")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
 
 			// road user traveling after road closure
-			Assert.assertEquals("Scores have changed.", 549.2444444444445, scenarioForTesting.getPopulation().getPersons().get(Id.createPersonId("container11_road_after_road_closure")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
+			Assertions.assertEquals(549.2444444444445, scenarioForTesting.getPopulation().getPersons().get(Id.createPersonId("container11_road_after_road_closure")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
 				
 			// road user traveling at night should get a penalty
-			Assert.assertEquals("Scores have changed.", -2450.7555555555555, scenarioForTesting.getPopulation().getPersons().get(Id.createPersonId("container12_night_penalty")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
+			Assertions.assertEquals(-2450.7555555555555, scenarioForTesting.getPopulation().getPersons().get(Id.createPersonId("container12_night_penalty")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
 			
 		} catch ( Exception ee ) {
 			ee.printStackTrace();
 			LogManager.getLogger(this.getClass()).fatal("there was an exception: \n" + ee ) ;
 
 			// if one catches an exception, then one needs to explicitly fail the test:
-			Assert.fail();
+			Assertions.fail();
 		}
 	}
 
@@ -511,22 +511,22 @@ public class AddCargoSupplyTest {
 			
 			// uses train + arrives on time
 			
-			Assert.assertEquals("Scores have changed.", 796.94828287659, scenarioForTesting.getPopulation().getPersons().get(Id.createPersonId("container1")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
+			Assertions.assertEquals(796.94828287659, scenarioForTesting.getPopulation().getPersons().get(Id.createPersonId("container1")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
 			
 			// uses train + arrives on time, slightly reduced score because this container is at a later position in the queue and needs more time
-			Assert.assertEquals("Scores have changed.", 791.6427273210, scenarioForTesting.getPopulation().getPersons().get(Id.createPersonId("container10")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);			
+			Assertions.assertEquals(791.6427273210, scenarioForTesting.getPopulation().getPersons().get(Id.createPersonId("container10")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);			
 			
 			// road user traveling before road closure
-			Assert.assertEquals("Scores have changed.", 549.2444444444445, scenarioForTesting.getPopulation().getPersons().get(Id.createPersonId("container9_road_before_closing_road")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
+			Assertions.assertEquals(549.2444444444445, scenarioForTesting.getPopulation().getPersons().get(Id.createPersonId("container9_road_before_closing_road")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
 
 			// road user traveling during road closure, should be delayed (requires more time on the road than the other road users)
-			Assert.assertEquals("Scores have changed.", -1473.2208333333333, scenarioForTesting.getPopulation().getPersons().get(Id.createPersonId("container10_road_affected_by_road_closure")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
+			Assertions.assertEquals(-1473.2208333333333, scenarioForTesting.getPopulation().getPersons().get(Id.createPersonId("container10_road_affected_by_road_closure")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
 
 			// road user traveling after road closure
-			Assert.assertEquals("Scores have changed.", 549.2444444444445, scenarioForTesting.getPopulation().getPersons().get(Id.createPersonId("container11_road_after_road_closure")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
+			Assertions.assertEquals(549.2444444444445, scenarioForTesting.getPopulation().getPersons().get(Id.createPersonId("container11_road_after_road_closure")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
 				
 			// road user traveling at night should get a penalty
-			Assert.assertEquals("Scores have changed.", -2450.7555555555555, scenarioForTesting.getPopulation().getPersons().get(Id.createPersonId("container12_night_penalty")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
+			Assertions.assertEquals(-2450.7555555555555, scenarioForTesting.getPopulation().getPersons().get(Id.createPersonId("container12_night_penalty")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
 			
 			
 			
@@ -535,7 +535,7 @@ public class AddCargoSupplyTest {
 			LogManager.getLogger(this.getClass()).fatal("there was an exception: \n" + ee ) ;
 
 			// if one catches an exception, then one needs to explicitly fail the test:
-			Assert.fail();
+			Assertions.fail();
 		}
 	}
 
@@ -564,7 +564,7 @@ public class AddCargoSupplyTest {
 		config.transit().setTransitScheduleFile("cargoTransitSchedule.xml.gz");
 		config.transit().setVehiclesFile("cargoTransitVehicles.xml.gz");
 		config.plans().setInputFile("plans.xml");
-		config.controler().setLastIteration(0);
+		config.controller().setLastIteration(0);
 		
 		IntermodalFreightConfigGroup ifCfg = (IntermodalFreightConfigGroup) config.getModules().get(IntermodalFreightConfigGroup.GROUP_NAME);
 		ifCfg.setTerminalCapacityApproach(TerminalCapacityApproach.WithCapacityReduction);

@@ -6,9 +6,9 @@ package ch.sbb.intermodalfreight;
 import java.io.File;
 
 import org.apache.commons.io.FileUtils;
-import org.junit.Assert;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.matsim.api.core.v01.Id;
 import org.matsim.api.core.v01.Scenario;
 import org.matsim.core.config.ConfigUtils;
@@ -25,7 +25,7 @@ import ch.sbb.intermodalfreight.utils.config.Project;
  */
 public class RunExampleIT {
 	
-	@Rule public MatsimTestUtils utils = new MatsimTestUtils() ;
+	@RegisterExtension public MatsimTestUtils utils = new MatsimTestUtils() ;
 	
 	/**
 	 * Tests the run example.
@@ -54,7 +54,7 @@ public class RunExampleIT {
 			
 		} catch ( Exception ee ) {
 			ee.printStackTrace();
-			Assert.fail();			
+			Assertions.fail();			
 		}	
 	}
 	
@@ -86,14 +86,14 @@ public class RunExampleIT {
 			
 			Scenario scenario = ScenarioUtils.createScenario(ConfigUtils.createConfig());
 			new PopulationReader(scenario).readFile("test/output/ch/sbb/intermodalFreight/RunExampleIT/05_matsim_output/rTest/rTest.output_plans.xml.gz");
-			Assert.assertEquals("Scores have changed.", 300.11163215607803, scenario.getPopulation().getPersons().get(Id.createPersonId("container_0_car")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
-			Assert.assertEquals("Scores have changed.", 489.2102394530788, scenario.getPopulation().getPersons().get(Id.createPersonId("container_0_pt")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
-			Assert.assertEquals("Scores have changed.", 473.2490557805454, scenario.getPopulation().getPersons().get(Id.createPersonId("container_1_car")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
-			Assert.assertEquals("Scores have changed.", -2765.101665525193, scenario.getPopulation().getPersons().get(Id.createPersonId("container_1_pt")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
+			Assertions.assertEquals(300.11163215607803, scenario.getPopulation().getPersons().get(Id.createPersonId("container_0_car")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
+			Assertions.assertEquals(489.2102394530788, scenario.getPopulation().getPersons().get(Id.createPersonId("container_0_pt")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
+			Assertions.assertEquals(473.2490557805454, scenario.getPopulation().getPersons().get(Id.createPersonId("container_1_car")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
+			Assertions.assertEquals(-2765.101665525193, scenario.getPopulation().getPersons().get(Id.createPersonId("container_1_pt")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
 
 		} catch ( Exception ee ) {
 			ee.printStackTrace();
-			Assert.fail();			
+			Assertions.fail();			
 		}	
 	}
 

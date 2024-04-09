@@ -29,9 +29,9 @@ import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
-import org.junit.Assert;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.matsim.api.core.v01.Coord;
 import org.matsim.api.core.v01.Id;
 import org.matsim.api.core.v01.Scenario;
@@ -67,8 +67,9 @@ import ch.sbb.intermodalfreight.simulate.RunIntermodalFreightScenario;
  */
 public class AddCargoSupplyMultipleContainerTypesTest {
 	
-	@Rule public MatsimTestUtils utils = new MatsimTestUtils() ;
-
+	@RegisterExtension
+	private MatsimTestUtils utils = new MatsimTestUtils();
+	
 	/**
 	 * 
 	 * single iteration
@@ -77,7 +78,7 @@ public class AddCargoSupplyMultipleContainerTypesTest {
 	 * 
 	 */
 	@Test
-	public final void testSameCapacityOneIteration() {
+	void testSameCapacityOneIteration() {
 
 		try {
 			
@@ -122,37 +123,37 @@ public class AddCargoSupplyMultipleContainerTypesTest {
 			
 			// ######################################################################
 
-			Assert.assertEquals("Scores have changed.", 831.6735602167748, scenario.getPopulation().getPersons().get(Id.createPersonId("container_sattelauflieger1")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
-			Assert.assertEquals("Scores have changed.", 831.6735602167748, scenario.getPopulation().getPersons().get(Id.createPersonId("container_sattelauflieger2")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
+			Assertions.assertEquals(831.6735602167748, scenario.getPopulation().getPersons().get(Id.createPersonId("container_sattelauflieger1")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON, "Scores have changed.");
+			Assertions.assertEquals(831.6735602167748, scenario.getPopulation().getPersons().get(Id.createPersonId("container_sattelauflieger2")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
 			
-			Assert.assertEquals("Scores have changed.", 831.6735602167748, scenario.getPopulation().getPersons().get(Id.createPersonId("container_wechselbehaelter1")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
-			Assert.assertEquals("Scores have changed.", 831.6735602167748, scenario.getPopulation().getPersons().get(Id.createPersonId("container_wechselbehaelter2")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
+			Assertions.assertEquals(831.6735602167748, scenario.getPopulation().getPersons().get(Id.createPersonId("container_wechselbehaelter1")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
+			Assertions.assertEquals(831.6735602167748, scenario.getPopulation().getPersons().get(Id.createPersonId("container_wechselbehaelter2")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
 			
-			Assert.assertEquals("Scores have changed.", 831.6735602167748, scenario.getPopulation().getPersons().get(Id.createPersonId("container1")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
+			Assertions.assertEquals(831.6735602167748, scenario.getPopulation().getPersons().get(Id.createPersonId("container1")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
 
-			Assert.assertEquals("Scores have changed.", -1168.3264397832252, scenario.getPopulation().getPersons().get(Id.createPersonId("container2")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
+			Assertions.assertEquals(-1168.3264397832252, scenario.getPopulation().getPersons().get(Id.createPersonId("container2")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
 				
-			Assert.assertEquals("Scores have changed.", 831.6735602167748, scenario.getPopulation().getPersons().get(Id.createPersonId("container3")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
+			Assertions.assertEquals(831.6735602167748, scenario.getPopulation().getPersons().get(Id.createPersonId("container3")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
 			
-			Assert.assertEquals("Scores have changed.", 831.6735602167748, scenario.getPopulation().getPersons().get(Id.createPersonId("container4")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
+			Assertions.assertEquals(831.6735602167748, scenario.getPopulation().getPersons().get(Id.createPersonId("container4")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
 
 			// ######################################################################
 			
 			
-			Assert.assertEquals("Scores have changed.", 623.7505982615172, scenario.getPopulation().getPersons().get(Id.createPersonId("container5")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
-			Assert.assertEquals("Scores have changed.", 623.7505982615172, scenario.getPopulation().getPersons().get(Id.createPersonId("container6")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
-			Assert.assertEquals("Scores have changed.", 623.7505982615172, scenario.getPopulation().getPersons().get(Id.createPersonId("container7")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
+			Assertions.assertEquals(623.7505982615172, scenario.getPopulation().getPersons().get(Id.createPersonId("container5")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
+			Assertions.assertEquals(623.7505982615172, scenario.getPopulation().getPersons().get(Id.createPersonId("container6")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
+			Assertions.assertEquals(623.7505982615172, scenario.getPopulation().getPersons().get(Id.createPersonId("container7")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
 		
 			// Container 8 and 9 use the car only mode.
-			Assert.assertEquals("Scores have changed.", 579.65, scenario.getPopulation().getPersons().get(Id.createPersonId("container8")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
-			Assert.assertEquals("Scores have changed.", 579.65, scenario.getPopulation().getPersons().get(Id.createPersonId("container9")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
+			Assertions.assertEquals(579.65, scenario.getPopulation().getPersons().get(Id.createPersonId("container8")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
+			Assertions.assertEquals(579.65, scenario.getPopulation().getPersons().get(Id.createPersonId("container9")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
 				
 		} catch ( Exception ee ) {
 			ee.printStackTrace();
 			LogManager.getLogger(this.getClass()).fatal("there was an exception: \n" + ee ) ;
 
 			// if one catches an exception, then one needs to explicitly fail the test:
-			Assert.fail();
+			Assertions.fail();
 		}
 	}
 
@@ -284,7 +285,7 @@ public class AddCargoSupplyMultipleContainerTypesTest {
 		config.transit().setTransitScheduleFile("cargoTransitSchedule.xml.gz");
 		config.transit().setVehiclesFile("cargoTransitVehicles.xml.gz");
 		config.plans().setInputFile("plans.xml");
-		config.controler().setLastIteration(0);
+		config.controller().setLastIteration(0);
 		
 		Scenario scenario = RunIntermodalFreightScenario.prepareScenario(config);
 		Controler controler = RunIntermodalFreightScenario.prepareControler(scenario);

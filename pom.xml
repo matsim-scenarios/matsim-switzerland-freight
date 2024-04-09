@@ -11,9 +11,10 @@
 
     <properties>
         <!--<matsim.version>16.0-2023w40</matsim.version>-->
-        <!--<matsim.version>16.0-2024w11</matsim.version>-->
-        <matsim.version>14.0-PR1816</matsim.version>
+        <matsim.version>16.0-2024w13</matsim.version>
+        <!-- <matsim.version>14.0-PR1816</matsim.version>-->
         <log4j.version>2.20.0</log4j.version>
+        <junit.version>5.10.2</junit.version>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -88,27 +89,27 @@
             <artifactId>log4j-slf4j-impl</artifactId>
             <version>${log4j.version}</version>
         </dependency>
-
-      	<dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>5.9.2</version>
-            <scope>test</scope>
-        </dependency>
-        
         
         <!-- Include the JUnit testing library.  Not transitive. -->
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.13.1</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+		
+		<dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
-            <version>3.24.2</version>
+            <version>3.25.3</version>
+            <scope>test</scope>
         </dependency>
 
         <dependency>

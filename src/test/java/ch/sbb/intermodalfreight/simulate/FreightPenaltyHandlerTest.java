@@ -18,9 +18,9 @@
  * *********************************************************************** */
 package ch.sbb.intermodalfreight.simulate;
 
-import org.junit.Assert;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.matsim.testcases.MatsimTestUtils;
 
 /**
@@ -29,25 +29,25 @@ import org.matsim.testcases.MatsimTestUtils;
  */
 public class FreightPenaltyHandlerTest {
 	
-	@Rule public MatsimTestUtils utils = new MatsimTestUtils() ;
+	@RegisterExtension public MatsimTestUtils utils = new MatsimTestUtils() ;
 
 	@Test
 	public final void testLegWasDuringNight() {
-		Assert.assertEquals(false, FreightPenaltyHandler.legWasDuringNight(8 * 3600., 10 * 3600.));
-		Assert.assertEquals(true, FreightPenaltyHandler.legWasDuringNight(21 * 3600., 24 * 3600 + 9 * 3600.));
-		Assert.assertEquals(true, FreightPenaltyHandler.legWasDuringNight(8 * 3600., 24 * 3600. + 23 * 3600.));
-		Assert.assertEquals(true, FreightPenaltyHandler.legWasDuringNight(22 * 3600., 23 * 3600.));
-		Assert.assertEquals(true, FreightPenaltyHandler.legWasDuringNight(3 * 3600., 4 * 3600.));
-		Assert.assertEquals(true, FreightPenaltyHandler.legWasDuringNight(3 * 3600., 6 * 3600.));
-		Assert.assertEquals(false, FreightPenaltyHandler.legWasDuringNight(20 * 3600., 21 * 3600.));
+		Assertions.assertEquals(false, FreightPenaltyHandler.legWasDuringNight(8 * 3600., 10 * 3600.));
+		Assertions.assertEquals(true, FreightPenaltyHandler.legWasDuringNight(21 * 3600., 24 * 3600 + 9 * 3600.));
+		Assertions.assertEquals(true, FreightPenaltyHandler.legWasDuringNight(8 * 3600., 24 * 3600. + 23 * 3600.));
+		Assertions.assertEquals(true, FreightPenaltyHandler.legWasDuringNight(22 * 3600., 23 * 3600.));
+		Assertions.assertEquals(true, FreightPenaltyHandler.legWasDuringNight(3 * 3600., 4 * 3600.));
+		Assertions.assertEquals(true, FreightPenaltyHandler.legWasDuringNight(3 * 3600., 6 * 3600.));
+		Assertions.assertEquals(false, FreightPenaltyHandler.legWasDuringNight(20 * 3600., 21 * 3600.));
 
 		// start on second day
-		Assert.assertEquals(false, FreightPenaltyHandler.legWasDuringNight(24 * 3600. + 19 * 3600., 24 * 3600. + 20 * 3600.));
-		Assert.assertEquals(true, FreightPenaltyHandler.legWasDuringNight(24 * 3600. + 19 * 3600., 24 * 3600. + 23 * 3600.));	
-		Assert.assertEquals(true, FreightPenaltyHandler.legWasDuringNight(24 * 3600. + 4 * 3600., 24 * 3600. + 9 * 3600.));	
+		Assertions.assertEquals(false, FreightPenaltyHandler.legWasDuringNight(24 * 3600. + 19 * 3600., 24 * 3600. + 20 * 3600.));
+		Assertions.assertEquals(true, FreightPenaltyHandler.legWasDuringNight(24 * 3600. + 19 * 3600., 24 * 3600. + 23 * 3600.));	
+		Assertions.assertEquals(true, FreightPenaltyHandler.legWasDuringNight(24 * 3600. + 4 * 3600., 24 * 3600. + 9 * 3600.));	
 		
 		// some crazy cases
-		Assert.assertEquals(true, FreightPenaltyHandler.legWasDuringNight(6 * 3600., 2 * 24 * 3600 + 17 * 3600.));
+		Assertions.assertEquals(true, FreightPenaltyHandler.legWasDuringNight(6 * 3600., 2 * 24 * 3600 + 17 * 3600.));
 	}	
 	
 }

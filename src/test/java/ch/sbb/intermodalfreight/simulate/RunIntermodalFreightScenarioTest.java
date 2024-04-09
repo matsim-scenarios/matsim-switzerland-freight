@@ -19,9 +19,9 @@
 package ch.sbb.intermodalfreight.simulate;
 
 import org.apache.logging.log4j.LogManager;
-import org.junit.Assert;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.matsim.api.core.v01.Id;
 import org.matsim.api.core.v01.Scenario;
 import org.matsim.api.core.v01.population.Leg;
@@ -37,7 +37,7 @@ import org.matsim.testcases.MatsimTestUtils;
  */
 public class RunIntermodalFreightScenarioTest {
 
-	@Rule public MatsimTestUtils utils = new MatsimTestUtils() ;
+	@RegisterExtension public MatsimTestUtils utils = new MatsimTestUtils() ;
 
 	/**
 	 * Base setup:
@@ -69,23 +69,25 @@ public class RunIntermodalFreightScenarioTest {
 			controler.run();
 
 			// car score
-			Assert.assertEquals("Modes have changed.", "car", getLegModes(scenario.getPopulation().getPersons().get(Id.createPersonId("container0")).getSelectedPlan()));
-			Assert.assertEquals("Scores have changed.", 579.65, scenario.getPopulation().getPersons().get(Id.createPersonId("container0")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
+			Assertions.assertEquals("car", getLegModes(scenario.getPopulation().getPersons().get(Id.createPersonId("container0")).getSelectedPlan()));
+			Assertions.assertEquals(579.65, scenario.getPopulation().getPersons().get(Id.createPersonId("container0")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
 
 			// rail container, not delayed
-			Assert.assertEquals("Modes have changed.", "carKV_TEU---pt---carKV_TEU", getLegModes(scenario.getPopulation().getPersons().get(Id.createPersonId("container1")).getSelectedPlan()));
-			Assert.assertEquals("Scores have changed.", 831.6735602167748, scenario.getPopulation().getPersons().get(Id.createPersonId("container1")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
+			Assertions.assertEquals("carKV_TEU---walk---pt---walk---carKV_TEU", getLegModes(scenario.getPopulation().getPersons().get(Id.createPersonId("container1")).getSelectedPlan()));
+//			Assertions.assertEquals("carKV_TEU---pt---carKV_TEU", getLegModes(scenario.getPopulation().getPersons().get(Id.createPersonId("container1")).getSelectedPlan()));
+			Assertions.assertEquals(831.6735602167748, scenario.getPopulation().getPersons().get(Id.createPersonId("container1")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
 
 			// rail container, delayed
-			Assert.assertEquals("Modes have changed.", "carKV_TEU---pt---carKV_TEU", getLegModes(scenario.getPopulation().getPersons().get(Id.createPersonId("container2")).getSelectedPlan()));
-			Assert.assertEquals("Scores have changed.", -1168.3264397832252, scenario.getPopulation().getPersons().get(Id.createPersonId("container2")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
+			Assertions.assertEquals("carKV_TEU---walk---pt---walk---carKV_TEU", getLegModes(scenario.getPopulation().getPersons().get(Id.createPersonId("container2")).getSelectedPlan()));
+//			Assertions.assertEquals("Modes have changed.", "carKV_TEU---pt---carKV_TEU", getLegModes(scenario.getPopulation().getPersons().get(Id.createPersonId("container2")).getSelectedPlan()));
+			Assertions.assertEquals(-1168.3264397832252, scenario.getPopulation().getPersons().get(Id.createPersonId("container2")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
 
 		} catch ( Exception ee ) {
 			ee.printStackTrace();
 			LogManager.getLogger(this.getClass()).fatal("there was an exception: \n" + ee ) ;
 
 			// if one catches an exception, then one needs to explicitly fail the test:
-			Assert.fail();
+			Assertions.fail();
 		}
 	}
 
@@ -122,23 +124,25 @@ public class RunIntermodalFreightScenarioTest {
 			controler.run();
 
 			// car score
-			Assert.assertEquals("Modes have changed.", "car", getLegModes(scenario.getPopulation().getPersons().get(Id.createPersonId("container0")).getSelectedPlan()));
-			Assert.assertEquals("Scores have changed.", 579.65, scenario.getPopulation().getPersons().get(Id.createPersonId("container0")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
+			Assertions.assertEquals( "car", getLegModes(scenario.getPopulation().getPersons().get(Id.createPersonId("container0")).getSelectedPlan()));
+			Assertions.assertEquals(579.65, scenario.getPopulation().getPersons().get(Id.createPersonId("container0")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
 
 			// rail container, not delayed
-			Assert.assertEquals("Modes have changed.", "carKV_TEU---pt---carKV_TEU", getLegModes(scenario.getPopulation().getPersons().get(Id.createPersonId("container1")).getSelectedPlan()));
-			Assert.assertEquals("Scores have changed.", 831.6735602167748, scenario.getPopulation().getPersons().get(Id.createPersonId("container1")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
+			Assertions.assertEquals("carKV_TEU---walk---pt---walk---carKV_TEU", getLegModes(scenario.getPopulation().getPersons().get(Id.createPersonId("container1")).getSelectedPlan()));
+//			Assertions.assertEquals("carKV_TEU---pt---carKV_TEU", getLegModes(scenario.getPopulation().getPersons().get(Id.createPersonId("container1")).getSelectedPlan()));
+			Assertions.assertEquals(831.6735602167748, scenario.getPopulation().getPersons().get(Id.createPersonId("container1")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
 
 			// rail container, no longer delayed
-			Assert.assertEquals("Modes have changed.", "carKV_TEU---pt---carKV_TEU", getLegModes(scenario.getPopulation().getPersons().get(Id.createPersonId("container2")).getSelectedPlan()));
-			Assert.assertEquals("Scores have changed.", 831.6735602167748, scenario.getPopulation().getPersons().get(Id.createPersonId("container2")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
+			Assertions.assertEquals( "carKV_TEU---walk---pt---walk---carKV_TEU", getLegModes(scenario.getPopulation().getPersons().get(Id.createPersonId("container2")).getSelectedPlan()));
+//			Assertions.assertEquals( "carKV_TEU---pt---carKV_TEU", getLegModes(scenario.getPopulation().getPersons().get(Id.createPersonId("container2")).getSelectedPlan()));
+			Assertions.assertEquals(831.6735602167748, scenario.getPopulation().getPersons().get(Id.createPersonId("container2")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
 
 		} catch ( Exception ee ) {
 			ee.printStackTrace();
 			LogManager.getLogger(this.getClass()).fatal("there was an exception: \n" + ee ) ;
 
 			// if one catches an exception, then one needs to explicitly fail the test:
-			Assert.fail();
+			Assertions.fail();
 		}
 	}
 
@@ -170,23 +174,24 @@ public class RunIntermodalFreightScenarioTest {
 			controler.run();
 
 			// car score
-			Assert.assertEquals("Modes have changed.", "car", getLegModes(scenario.getPopulation().getPersons().get(Id.createPersonId("container0")).getSelectedPlan()));
-			Assert.assertEquals("Scores have changed.", 579.65, scenario.getPopulation().getPersons().get(Id.createPersonId("container0")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
+			Assertions.assertEquals("car", getLegModes(scenario.getPopulation().getPersons().get(Id.createPersonId("container0")).getSelectedPlan()));
+			Assertions.assertEquals(579.65, scenario.getPopulation().getPersons().get(Id.createPersonId("container0")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
 
 			// rail container, not delayed
-			Assert.assertEquals("Modes have changed.", "carKV_TEU---pt---carKV_TEU", getLegModes(scenario.getPopulation().getPersons().get(Id.createPersonId("container1")).getSelectedPlan()));
-			Assert.assertEquals("Scores have changed.", 831.6735602167748, scenario.getPopulation().getPersons().get(Id.createPersonId("container1")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
+			Assertions.assertEquals("carKV_TEU---walk---pt---walk---carKV_TEU", getLegModes(scenario.getPopulation().getPersons().get(Id.createPersonId("container1")).getSelectedPlan()));
+//			Assertions.assertEquals("carKV_TEU---pt---carKV_TEU", getLegModes(scenario.getPopulation().getPersons().get(Id.createPersonId("container1")).getSelectedPlan()));
+			Assertions.assertEquals(831.6735602167748, scenario.getPopulation().getPersons().get(Id.createPersonId("container1")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
 
 			// rail container, delayed which eventually switches to car
-			Assert.assertEquals("Modes have changed.", "car", getLegModes(scenario.getPopulation().getPersons().get(Id.createPersonId("container2")).getSelectedPlan()));
-			Assert.assertEquals("Scores have changed.", 579.65, scenario.getPopulation().getPersons().get(Id.createPersonId("container2")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
+			Assertions.assertEquals("car", getLegModes(scenario.getPopulation().getPersons().get(Id.createPersonId("container2")).getSelectedPlan()));
+			Assertions.assertEquals(579.65, scenario.getPopulation().getPersons().get(Id.createPersonId("container2")).getSelectedPlan().getScore(), MatsimTestUtils.EPSILON);
 
 		} catch ( Exception ee ) {
 			ee.printStackTrace();
 			LogManager.getLogger(this.getClass()).fatal("there was an exception: \n" + ee ) ;
 
 			// if one catches an exception, then one needs to explicitly fail the test:
-			Assert.fail();
+			Assertions.fail();
 		}
 	}
 

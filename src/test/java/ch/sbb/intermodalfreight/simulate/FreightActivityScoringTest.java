@@ -21,14 +21,14 @@ package ch.sbb.intermodalfreight.simulate;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.matsim.api.core.v01.Coord;
 import org.matsim.api.core.v01.Id;
 import org.matsim.api.core.v01.population.Activity;
 import org.matsim.api.core.v01.population.Person;
-import org.matsim.core.config.groups.PlanCalcScoreConfigGroup;
 import org.matsim.core.config.groups.ScenarioConfigGroup;
+import org.matsim.core.config.groups.ScoringConfigGroup;
 import org.matsim.core.population.PopulationUtils;
 import org.matsim.core.scoring.functions.ActivityUtilityParameters;
 import org.matsim.core.scoring.functions.ActivityUtilityParameters.ZeroUtilityComputation;
@@ -44,7 +44,7 @@ public class FreightActivityScoringTest {
 	@Test
 	public final void testScoresFixAmountsOnly() {
 
-		PlanCalcScoreConfigGroup scoringConfigGroup = new PlanCalcScoreConfigGroup();
+		ScoringConfigGroup scoringConfigGroup = new ScoringConfigGroup();
 		Map<String, ActivityUtilityParameters> activityParams = new HashMap<>();
 		
 		{
@@ -96,7 +96,7 @@ public class FreightActivityScoringTest {
 			scoring.handleFirstActivity(firstActivity);
 			scoring.handleLastActivity(lastActivity);
 			
-			Assert.assertEquals("Wrong score.", -1100., scoring.getScore(), MatsimTestUtils.EPSILON);
+			Assertions.assertEquals(-1100., scoring.getScore(), MatsimTestUtils.EPSILON);
 		}
 		
 		{
@@ -114,7 +114,7 @@ public class FreightActivityScoringTest {
 			scoring.handleFirstActivity(firstActivity);
 			scoring.handleLastActivity(lastActivity);
 			
-			Assert.assertEquals("Wrong score.", -999.9, scoring.getScore(), MatsimTestUtils.EPSILON);
+			Assertions.assertEquals(-999.9, scoring.getScore(), MatsimTestUtils.EPSILON);
 		}
 		
 		{
@@ -132,7 +132,7 @@ public class FreightActivityScoringTest {
 			scoring.handleFirstActivity(firstActivity);
 			scoring.handleLastActivity(lastActivity);
 			
-			Assert.assertEquals("Wrong score.", -100., scoring.getScore(), MatsimTestUtils.EPSILON);
+			Assertions.assertEquals(-100., scoring.getScore(), MatsimTestUtils.EPSILON);
 		}
 		
 		{
@@ -150,7 +150,7 @@ public class FreightActivityScoringTest {
 			scoring.handleFirstActivity(firstActivity);
 			scoring.handleLastActivity(lastActivity);
 			
-			Assert.assertEquals("Wrong score.", 0.1, scoring.getScore(), MatsimTestUtils.EPSILON);
+			Assertions.assertEquals(0.1, scoring.getScore(), MatsimTestUtils.EPSILON);
 		}
 		
 		{
@@ -166,7 +166,7 @@ public class FreightActivityScoringTest {
 			scoring.handleFirstActivity(firstActivity);
 			scoring.handleLastActivity(lastActivity);
 			
-			Assert.assertEquals("Wrong score.", 0., scoring.getScore(), MatsimTestUtils.EPSILON);
+			Assertions.assertEquals(0., scoring.getScore(), MatsimTestUtils.EPSILON);
 		}
 		
 		{
@@ -182,14 +182,14 @@ public class FreightActivityScoringTest {
 			scoring.handleFirstActivity(firstActivity);
 			scoring.handleLastActivity(lastActivity);
 			
-			Assert.assertEquals("Wrong score.", 0., scoring.getScore(), MatsimTestUtils.EPSILON);
+			Assertions.assertEquals(0., scoring.getScore(), MatsimTestUtils.EPSILON);
 		}
 	}
 	
 	@Test
 	public final void testScoresWithTimeDependentPenalties() {
 
-		PlanCalcScoreConfigGroup scoringConfigGroup = new PlanCalcScoreConfigGroup();
+		ScoringConfigGroup scoringConfigGroup = new ScoringConfigGroup();
 		Map<String, ActivityUtilityParameters> activityParams = new HashMap<>();
 		
 		{
@@ -243,7 +243,7 @@ public class FreightActivityScoringTest {
 			scoring.handleFirstActivity(firstActivity);
 			scoring.handleLastActivity(lastActivity);
 			
-			Assert.assertEquals("Wrong score.", -1120., scoring.getScore(), MatsimTestUtils.EPSILON);
+			Assertions.assertEquals(-1120., scoring.getScore(), MatsimTestUtils.EPSILON);
 		}
 		
 		{
@@ -261,7 +261,7 @@ public class FreightActivityScoringTest {
 			scoring.handleFirstActivity(firstActivity);
 			scoring.handleLastActivity(lastActivity);
 			
-			Assert.assertEquals("Wrong score.", -1009.9, scoring.getScore(), MatsimTestUtils.EPSILON);
+			Assertions.assertEquals(-1009.9, scoring.getScore(), MatsimTestUtils.EPSILON);
 		}
 		
 		{
@@ -279,7 +279,7 @@ public class FreightActivityScoringTest {
 			scoring.handleFirstActivity(firstActivity);
 			scoring.handleLastActivity(lastActivity);
 			
-			Assert.assertEquals("Wrong score.", -110., scoring.getScore(), MatsimTestUtils.EPSILON);
+			Assertions.assertEquals(-110., scoring.getScore(), MatsimTestUtils.EPSILON);
 		}
 		
 		{
@@ -297,7 +297,7 @@ public class FreightActivityScoringTest {
 			scoring.handleFirstActivity(firstActivity);
 			scoring.handleLastActivity(lastActivity);
 			
-			Assert.assertEquals("Wrong score.", 0.1, scoring.getScore(), MatsimTestUtils.EPSILON);
+			Assertions.assertEquals(0.1, scoring.getScore(), MatsimTestUtils.EPSILON);
 		}
 		
 		{
@@ -313,7 +313,7 @@ public class FreightActivityScoringTest {
 			scoring.handleFirstActivity(firstActivity);
 			scoring.handleLastActivity(lastActivity);
 			
-			Assert.assertEquals("Wrong score.", 0., scoring.getScore(), MatsimTestUtils.EPSILON);
+			Assertions.assertEquals(0., scoring.getScore(), MatsimTestUtils.EPSILON);
 		}
 		
 		{
@@ -329,7 +329,7 @@ public class FreightActivityScoringTest {
 			scoring.handleFirstActivity(firstActivity);
 			scoring.handleLastActivity(lastActivity);
 			
-			Assert.assertEquals("Wrong score.", 0., scoring.getScore(), MatsimTestUtils.EPSILON);
+			Assertions.assertEquals(0., scoring.getScore(), MatsimTestUtils.EPSILON);
 		}
 	}	
 	
