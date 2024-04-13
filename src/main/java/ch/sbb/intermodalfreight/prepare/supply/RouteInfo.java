@@ -17,12 +17,14 @@ public class RouteInfo {
 
 	private final String line;
 	private final String route;
+	private final Double units;
 	private final Map<String, List<Double>> terminalFromHeader2Times;
 	private List<RouteStopInfo> routeStopInfos;
 
-	public RouteInfo(String line, String route, Map<String, List<Double>> terminal2Times) {
+	public RouteInfo(String line, String route, Double units, Map<String, List<Double>> terminal2Times) {
 		this.line = line;
 		this.route = route;
+		this.units = units;
 		this.terminalFromHeader2Times = terminal2Times;
 	}
 
@@ -49,7 +51,7 @@ public class RouteInfo {
 
 	@Override
 	public String toString() {
-		return "RouteInfo [line=" + line + ", route=" + route + ", terminalFromHeader2Times=" + terminalFromHeader2Times + "]";
+		return "RouteInfo [line=" + line + ", route=" + route + ", units = " + units + ", terminalFromHeader2Times=" + terminalFromHeader2Times + "]";
 	}
 
 	public List<RouteStopInfo> getRouteStopInfos() {
@@ -59,5 +61,11 @@ public class RouteInfo {
 	public void setRouteStopInfos(List<RouteStopInfo> routeStopInfos) {
 		this.routeStopInfos = routeStopInfos;
 	}
+
+	public Double getUnits() {
+		return units;
+	}
+	
+	
 
 }
