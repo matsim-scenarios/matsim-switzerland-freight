@@ -118,8 +118,9 @@ public class RunGenerateCargoSupply {
 	    	String transitLine = routeInfo.getLine();
 	    	String transitRoute = routeInfo.getRoute();
 			List<RouteStopInfo> routeStopInfos = routeInfo.getRouteStopInfos();
-	    	
-			supply.addCargoConnection(routeCounter, transitLine, transitRoute, routeStopInfos, cargoTrainCapacityTEU, relation2distance);
+			Double units = routeInfo.getUnits();
+				    	
+			supply.addCargoConnection(routeCounter, transitLine, transitRoute, units, routeStopInfos, cargoTrainCapacityTEU, relation2distance);
 			
 			routeCounter++;
 	    }

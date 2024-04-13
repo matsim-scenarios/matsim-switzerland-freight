@@ -313,10 +313,10 @@ public class GenerateCargoSupply {
         Node nearestNodeXB2 = getNearestNode(carOnlyNetwork, xB1.getCoord()); 
         addLink(name, NetworkUtils.getEuclideanDistance(xB1.getCoord(), nearestNodeXB2.getCoord()), xB1, nearestNodeXB2, new HashSet<>(Arrays.asList(carModeKV)), largeLinkCapacity, 13.8889, numberOfLanesTerminalConnectionLinks);            
 	}
-
+	
 	/**
 	 * 
-	 * Adds a cargo train connection.
+	 * Adds a cargo train connection in which the units is set to 1.0
 	 * 
 	 * @param routeCounter a unique integer value
 	 * @param transitLine name of the transit line, used to create IDs
@@ -326,9 +326,27 @@ public class GenerateCargoSupply {
 	 * @param relation2distance (optional) a map which contains the distances between the terminals; if null the euclidean distance will be used
 	 */
 	public TransitLine addCargoConnection(int routeCounter, String transitLine, String transitRoute, List<RouteStopInfo> routeInfos, int vehicleCapacity, Map<String, Integer> relation2distance) {
+		Double units = 1.0;
+		return this.addCargoConnection(routeCounter, transitLine, transitRoute, units, routeInfos, vehicleCapacity, relation2distance);
+	}
+
+	/**
+	 * 
+	 * Adds a cargo train connection.
+	 * 
+	 * @param routeCounter a unique integer value
+	 * @param transitLine name of the transit line, used to create IDs
+	 * @param transitRoute name of the transit route, used to create IDs
+	 * @param units train units, e.g. 1.0 for a full train, 0.5 for a half train
+	 * @param routeInfos a correctly sorted list which contains the route stop infos
+	 * @param vehicleCapacity train capacity in number of containers that fit into the train
+	 * @param relation2distance (optional) a map which contains the distances between the terminals; if null the euclidean distance will be used
+	 */
+	public TransitLine addCargoConnection(int routeCounter, String transitLine, String transitRoute, Double units, List<RouteStopInfo> routeInfos, int vehicleCapacity, Map<String, Integer> relation2distance) {
 		
 		if (routeInfos.size() < 2) throw new RuntimeException("At least two route stops required. Aborting...");
-		
+		if (units == null || units > 1.0 || units == 0.) throw new RuntimeException("Check units value: " + units);
+
 		log.info("Adding cargo connection...");
 		
 		List<Id<Link>> railLinks = new ArrayList<>();     
@@ -406,7 +424,7 @@ public class GenerateCargoSupply {
 			stopCounter++;
 		}
 		
-		VehicleType vehType = addVehicleType("cargoTrain_" + transitLine + "_" + transitRoute + "_" + routeCounter, vehicleCapacity);
+		VehicleType vehType = addVehicleType("cargoTrain_" + transitLine + "_" + transitRoute + "_" + routeCounter, (int) (vehicleCapacity * units));
         
 		NetworkRoute networkRoute = RouteUtils.createLinkNetworkRouteImpl(railLinks.get(0), railLinks.subList(1, railLinks.size() - 1), railLinks.get(railLinks.size() - 1));
         TransitRoute route = sf.createTransitRoute(Id.create(transitLine + "_" + transitRoute + "_" + routeCounter, TransitRoute.class), networkRoute, stops, "rail");

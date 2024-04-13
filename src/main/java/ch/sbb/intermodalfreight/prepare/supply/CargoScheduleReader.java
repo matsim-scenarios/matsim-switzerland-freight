@@ -55,6 +55,7 @@ public class CargoScheduleReader {
 		    
 		    int rowCounter = 0;
 		    for (Row row : sheet) {
+		    	log.info("-------");
 		      	
 		    	if (rowCounter == 0) {
 		    		
@@ -81,19 +82,22 @@ public class CargoScheduleReader {
 		    		
 		    		String line = null;
 			    	String route = null;
+			    	Double units = null;
 			    	Map<String,List<Double>> terminalFromHeader2Times = new HashMap<>();
 			    			        
 			        for (Cell cell : row) {
-			        	
+
 			        	if (cell.getCellType() == CellType.BLANK) {
 			        		// skip cell
 			        		continue;
 			        	}
-			        				        	
+			        		
 			        	String headerOfCurrentCell = column2Header.get(cell.getColumnIndex());
+			        	log.info(headerOfCurrentCell);
+			        	
 			        	headerOfCurrentCell = fixEncodingIssues(headerOfCurrentCell);
 			        	
-			        	if (headerOfCurrentCell.equals("Zug")) {
+			        	if (headerOfCurrentCell.equals("Linie")) {
 			        		if (cell.getCellType() == CellType.STRING) {
 			        			line = cell.getRichStringCellValue().getString();
 			        			line = fixEncodingIssues(line);
@@ -110,13 +114,24 @@ public class CargoScheduleReader {
 			        	} else if (headerOfCurrentCell.equals("Richtung")) {
 			        		// not required
 			        	
+			        	} else if (headerOfCurrentCell.equals("Zugeinheiten")) {
+			        		if (cell.getCellType() == CellType.NUMERIC) {
+			        			units = cell.getNumericCellValue();
+			        			if (units == null || units > 1.0 || units == 0.) throw new RuntimeException("Invalid units value: " + units);
+
+			        		} else {
+			        			throw new RuntimeException("Expecting the Zugeinheiten column as Numeric format. Aborting...");
+			        		}
+			        	
 			        	} else {
-			        		// this should be a terminal name
+			        		// the header should be a terminal name
 			        		
+			        		// initialize
 			        		if (terminalFromHeader2Times.get(headerOfCurrentCell) == null) {
 				        		terminalFromHeader2Times.put(headerOfCurrentCell, new ArrayList<>());
 			        		}
-			        				        				        		
+			        				        
+			        		// now, store the times for the terminal
 			        		if (cell.getCellType() == CellType.NUMERIC) {
 			        			Date date = cell.getDateCellValue();
 			            		double time = date.getHours() * 3600. + date.getMinutes() * 60 + date.getSeconds();
@@ -128,12 +143,13 @@ public class CargoScheduleReader {
 			            		terminalFromHeader2Times.get(headerOfCurrentCell).add(time);
 			            		
 			        		} else {
+			        			log.warn("Row number: " + row.getRowNum());
 			        			throw new RuntimeException("Expecting the An/Ab column as Numeric or Formula/Numeric format. Aborting... cellType: " + cell.getCellType() + " / " + cell.getStringCellValue());
 			        		}
 			        	}
 			        }
 			        
-			        RouteInfo routeInfo = new RouteInfo(line, route, terminalFromHeader2Times);
+			        RouteInfo routeInfo = new RouteInfo(line, route, units, terminalFromHeader2Times);
 			        if (line != null && route != null) routeInfos.add(routeInfo);
 		    	}
 		        rowCounter++;
@@ -272,7 +288,7 @@ public class CargoScheduleReader {
 			log.warn(terminal.getShortName());
 		}
 		
-		throw new NullPointerException("Could not find terminal. Aborting..." + terminalShort);
+		throw new NullPointerException("Could not find terminal " + terminalShort + ". Aborting...");
 	}
 
 	/**
