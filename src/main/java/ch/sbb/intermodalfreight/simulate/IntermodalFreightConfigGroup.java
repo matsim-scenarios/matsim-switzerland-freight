@@ -35,6 +35,7 @@ public class IntermodalFreightConfigGroup extends ReflectiveConfigGroup {
 	
 	public enum TerminalCapacityApproach { WithoutCapacityReduction, WithCapacityReduction };
 	public enum CarRoutingApproach { Default, Freespeed };
+	public enum DesiredArrivalTimeApproach { UseArrivalTimeFromInitialIteration, UseArrivalTimeFromInitialIterationAndMoveDayArrivalsToMorning };
 
 	private double arrivingLateUtility = -1000.;
 	private double departingEarlyUtiliy = -1000.;
@@ -52,6 +53,7 @@ public class IntermodalFreightConfigGroup extends ReflectiveConfigGroup {
 	
 	private TerminalCapacityApproach terminalCapacityApproach = TerminalCapacityApproach.WithoutCapacityReduction;
 	private CarRoutingApproach carRoutingApproach = CarRoutingApproach.Freespeed;
+	private DesiredArrivalTimeApproach desiredArrivalTimeApproach = DesiredArrivalTimeApproach.UseArrivalTimeFromInitialIteration;
 	
 	@StringGetter( "tolerance" )
 	public double getTolerance() {
@@ -182,6 +184,18 @@ public class IntermodalFreightConfigGroup extends ReflectiveConfigGroup {
 	public void setAdditionalToleranceForEmptyContainers(double additionalToleranceForEmptyContainers) {
 		this.additionalToleranceForEmptyContainers = additionalToleranceForEmptyContainers;
 	}
+
+	@StringGetter( "desiredArrivalTimeApproach" )
+	public DesiredArrivalTimeApproach getDesiredArrivalTimeApproach() {
+		return desiredArrivalTimeApproach;
+	}
+
+	@StringSetter( "desiredArrivalTimeApproach" )
+	public void setDesiredArrivalTimeApproach(DesiredArrivalTimeApproach desiredArrivalTimeApproach) {
+		this.desiredArrivalTimeApproach = desiredArrivalTimeApproach;
+	}
+	
+	
 	
 	
 }

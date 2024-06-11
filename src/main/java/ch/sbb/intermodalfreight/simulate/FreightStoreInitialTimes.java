@@ -17,6 +17,8 @@ import org.matsim.core.scoring.functions.ActivityUtilityParameters;
 import org.matsim.core.scoring.functions.ScoringParameters;
 import org.matsim.core.scoring.functions.SubpopulationScoringParameters;
 
+import ch.sbb.intermodalfreight.simulate.IntermodalFreightConfigGroup.DesiredArrivalTimeApproach;
+
 /**
  * 
  * Assumes that the departure and arrival times in the initial iteration are the desired arrival and departure times and writes them into the person attributes.
@@ -74,11 +76,33 @@ public class FreightStoreInitialTimes implements IterationEndsListener, Activity
 				Person person = this.scenario.getPopulation().getPersons().get(event.getPersonId());	
 				ScoringParameters params = new SubpopulationScoringParameters( scenario ).getScoringParameters(person);
 				ActivityUtilityParameters actParams = params.utilParams.get(event.getActType());
-				
+				IntermodalFreightConfigGroup imfcg = (IntermodalFreightConfigGroup) scenario.getConfig().getModules().get(IntermodalFreightConfigGroup.GROUP_NAME);
+
 				if (actParams.isScoreAtAll()) {
 					if (person.getAttributes().getAttribute(FreightActivityScoring.INITIAL_ARRIVAL_TIME) == null) {
 						double arrivalTime = event.getTime();
-
+						
+						if (imfcg.getDesiredArrivalTimeApproach() == DesiredArrivalTimeApproach.UseArrivalTimeFromInitialIteration) {
+							// do not change the arrival time
+						} else if (imfcg.getDesiredArrivalTimeApproach() == DesiredArrivalTimeApproach.UseArrivalTimeFromInitialIterationAndMoveDayArrivalsToMorning) {
+							
+							int desiredArrivalDay = (int) (arrivalTime / (24. * 3600));
+							
+							double initialDepartureTime = (double) person.getAttributes().getAttribute(FreightActivityScoring.INITIAL_DEPARTURE_TIME);
+							int desiredDepartureDay = (int) (initialDepartureTime / (24. * 3600));
+							
+							if (desiredArrivalDay == desiredDepartureDay) {
+								// desired departure and arrival on same day. no need to shift the desired arrival time.
+							} else {
+								
+								// shift the desired arrival time to the morning
+								arrivalTime = 6. * 3600 + 24. * 3600 * desiredArrivalDay;
+							}
+														
+						} else {
+							throw new RuntimeException("Unknown desired arrival time appproach: " + imfcg.getDesiredArrivalTimeApproach());
+						}
+						
 						person.getAttributes().putAttribute(FreightActivityScoring.INITIAL_ARRIVAL_TIME, arrivalTime);
 
 					} else {
