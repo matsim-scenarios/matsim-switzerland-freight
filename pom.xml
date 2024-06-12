@@ -14,8 +14,8 @@
         <!--<matsim.version>16.0-2024w11</matsim.version>-->
         <matsim.version>14.0-PR1816</matsim.version>
         <log4j.version>2.20.0</log4j.version>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
@@ -141,6 +141,15 @@
     
     <build>
 		<plugins>
+			<plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.10.1</version> <!-- Updated to a version that supports Java 21 -->
+                <configuration>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                </configuration>
+            </plugin>
 			<plugin>
 				<!-- This plugin makes source files and javadocs available inside eclipse.  In IntelliJ, this works without plugin.-->
 				<groupId>org.apache.maven.plugins</groupId>
