@@ -84,6 +84,13 @@ public class TerminalQueueDeactivationEventHandler implements
 	
 	private final String carKVLegPrefix = "carKV_";
 
+	// Optional person attribute (set by demand generation) giving the number of TEU-equivalent
+	// slots a container occupies on a train. Defaults to 1 (a standard TEU) when absent, so that
+	// demand files without this attribute keep behaving exactly as before. A 40' / FEU container
+	// should be tagged with a value of 2.
+	public static final String ATTRIBUTE_CONTAINER_SIZE_TEU = "container_size_teu";
+	private static final int DEFAULT_CONTAINER_SIZE_TEU = 1;
+
 	private final Map<Id<Link>, SignalizeableItem> queueLink2signal;
 	private final Set<Id<Vehicle>> transitVehicles;
 	private final Set<Id<Person>> transitDrivers;
@@ -102,7 +109,11 @@ public class TerminalQueueDeactivationEventHandler implements
 	private final Set<Id<Link>> relevantLinks;
 	private final Map<Id<TransitStopFacility>, Set<Link>> terminal2queueLinks;
 	private final Map<Id<TransitStopFacility>, Set<Link>> terminal2stackLinks;
-	private final Map<Id<Vehicle>, Integer> train2capacity;	
+	private final Map<Id<Vehicle>, Integer> train2capacity;
+	// Sum of container sizes (in TEU-equivalent slots) currently occupying each train, kept in
+	// sync alongside train2passengers so that FEU containers (size 2) consume twice the slots
+	// of a TEU container (size 1) when checking whether a train has room to board another agent.
+	private final Map<Id<Vehicle>, Integer> train2occupiedSlots;
 
 
 	private final Scenario scenario;
@@ -121,6 +132,7 @@ public class TerminalQueueDeactivationEventHandler implements
 		transitVehicles = new HashSet<>();
 		transitDrivers = new HashSet<>();
 		train2capacity = new HashMap<>();
+		train2occupiedSlots = new HashMap<>();
 		
 		train2route = new HashMap<>();
 		terminal2waitingPersons = new HashMap<>();
@@ -175,6 +187,7 @@ public class TerminalQueueDeactivationEventHandler implements
 		terminal2trains.clear();
 		train2terminal.clear();
 		train2passengers.clear();
+		train2occupiedSlots.clear();
 		person2legCounter.clear();
 		person2destinationStopLink.clear();
 		person2nextTrainRouteDescription.clear();
@@ -233,6 +246,7 @@ public class TerminalQueueDeactivationEventHandler implements
 		
 		// initialize
 		this.train2passengers.put(event.getVehicleId(), new HashSet<>());
+		this.train2occupiedSlots.put(event.getVehicleId(), 0);
 	}
 
 	@Override
@@ -330,6 +344,10 @@ public class TerminalQueueDeactivationEventHandler implements
 				
 				// remove the person from our passenger tracker
 				this.train2passengers.get(event.getVehicleId()).remove(event.getPersonId());
+				
+				// free up the slots this container occupied
+				int previousOccupied = this.train2occupiedSlots.getOrDefault(event.getVehicleId(), 0);
+				this.train2occupiedSlots.put(event.getVehicleId(), previousOccupied - getContainerSizeTeu(event.getPersonId()));
 			}
 		}
 	}
@@ -345,6 +363,10 @@ public class TerminalQueueDeactivationEventHandler implements
 				
 				// add the person to our passenger tracker
 				this.train2passengers.get(event.getVehicleId()).add(event.getPersonId());
+				
+				// occupy the slots this container needs (1 for a TEU, 2 for a FEU, see ATTRIBUTE_CONTAINER_SIZE_TEU)
+				int previousOccupied = this.train2occupiedSlots.getOrDefault(event.getVehicleId(), 0);
+				this.train2occupiedSlots.put(event.getVehicleId(), previousOccupied + getContainerSizeTeu(event.getPersonId()));
 				
 				// find out where the agent wants to get off the train
 				int currentLegNr = this.person2legCounter.get(event.getPersonId());
@@ -447,6 +469,24 @@ public class TerminalQueueDeactivationEventHandler implements
 	
 	
 
+	/**
+	 * Returns how many TEU-equivalent slots the given agent's container occupies on a train.
+	 * Reads the {@value #ATTRIBUTE_CONTAINER_SIZE_TEU} person attribute (set by the demand
+	 * generation), defaulting to {@value #DEFAULT_CONTAINER_SIZE_TEU} (a standard TEU) if absent,
+	 * so that existing demand files without this attribute are unaffected.
+	 */
+	private int getContainerSizeTeu(Id<Person> personId) {
+		Person person = this.scenario.getPopulation().getPersons().get(personId);
+		if (person == null) {
+			return DEFAULT_CONTAINER_SIZE_TEU;
+		}
+		Object sizeAttribute = person.getAttributes().getAttribute(ATTRIBUTE_CONTAINER_SIZE_TEU);
+		if (sizeAttribute instanceof Number) {
+			return ((Number) sizeAttribute).intValue();
+		}
+		return DEFAULT_CONTAINER_SIZE_TEU;
+	}
+
 	private boolean isTheStackWithBoardingAgents(Id<TransitStopFacility> stopFacilityId) {
 		
 		// (1) check the vehicles/persons on the links
@@ -506,7 +546,10 @@ public class TerminalQueueDeactivationEventHandler implements
 					// The agent wants to board one of the trains which is currently at the terminal.
 					
 					// check if the agent is able to board the train --> check if the train has available capacities
-					if (this.train2passengers.get(train).size() == this.train2capacity.get(train)) {
+					// (weighted by container size so that a FEU consumes 2 TEU-equivalent slots instead of 1)
+					int occupiedSlots = this.train2occupiedSlots.getOrDefault(train, 0);
+					int candidateSize = getContainerSizeTeu(personId);
+					if (occupiedSlots + candidateSize > this.train2capacity.get(train)) {
 						log.debug("The agent cannot board train " + train + " at stop " + stopFacilityId);
 						
 					} else {
