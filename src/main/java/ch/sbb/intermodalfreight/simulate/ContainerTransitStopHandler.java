@@ -174,7 +174,15 @@ public class ContainerTransitStopHandler implements TransitStopHandler {
 									break;
 								}
 
-								if(handler.handlePassengerEntering(enteringPassengers.get(0), vehicle, stop.getId(), now)){
+								PTPassengerAgent nextPassenger = enteringPassengers.get(0);
+								if (!queueEventHandler.hasRemainingCapacityFor(vehicle.getId(), nextPassenger.getId())) {
+									// This container (e.g. a FEU needing 2 TEU-equivalent slots) doesn't fit
+									// in the train's remaining capacity. Leave it (and everyone behind it in
+									// the FIFO boarding queue) waiting for a later train.
+									break;
+								}
+
+								if(handler.handlePassengerEntering(nextPassenger, vehicle, stop.getId(), now)){
 									enteringPassengers.remove(0);
 									this.passengersEnteringTimeFraction += personEntersTime;
 								} else {

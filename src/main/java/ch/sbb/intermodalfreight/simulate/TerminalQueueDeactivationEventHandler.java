@@ -487,6 +487,28 @@ public class TerminalQueueDeactivationEventHandler implements
 		return DEFAULT_CONTAINER_SIZE_TEU;
 	}
 
+	/**
+	 * Returns true if the given agent's container still fits into the given train's remaining
+	 * TEU-equivalent capacity, based on the occupancy currently tracked in train2occupiedSlots.
+	 * 
+	 * This is the ACTUAL admission gate used by ContainerTransitStopHandler when deciding
+	 * whether to let the next waiting passenger board (see handleSerialStop()). It is
+	 * deliberately separate from agentWantsToBoardATrainWhichIsCurrentlyAtTheStop(), which
+	 * only drives the truck-stack queue signal (crane-busy simulation) and does NOT gate
+	 * real boarding — MATSim's core PassengerAccessEgress only checks raw passenger count
+	 * against vehicle capacity, with no notion of container size.
+	 */
+	public boolean hasRemainingCapacityFor(Id<Vehicle> train, Id<Person> personId) {
+		Integer capacity = this.train2capacity.get(train);
+		if (capacity == null) {
+			// Unknown vehicle (should not happen for a train at a terminal) -> don't block.
+			return true;
+		}
+		int occupiedSlots = this.train2occupiedSlots.getOrDefault(train, 0);
+		int candidateSize = getContainerSizeTeu(personId);
+		return occupiedSlots + candidateSize <= capacity;
+	}
+
 	private boolean isTheStackWithBoardingAgents(Id<TransitStopFacility> stopFacilityId) {
 		
 		// (1) check the vehicles/persons on the links
