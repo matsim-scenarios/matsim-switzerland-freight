@@ -6,8 +6,8 @@
 
     <groupId>ch.sbb</groupId>
     <artifactId>matsim-switzerland-freight</artifactId>
-    <version>1.0.0-ibg-feu-SNAPSHOT</version>
-    <description>MATSim Switzerland freight scenario (IBG fork: weighted FEU/TEU train capacity)</description>
+    <version>1.0.0-SNAPSHOT</version>
+    <description>MATSim Switzerland freight scenario</description>
 
     <properties>
         <!--<matsim.version>16.0-2023w40</matsim.version>-->
