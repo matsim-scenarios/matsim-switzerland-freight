@@ -110,7 +110,20 @@ public class ContainerTransitStopHandler implements TransitStopHandler {
 		double stopTime = 0.0;
 
 		int cntEgress = leavingPassengers.size();
-		int cntAccess = enteringPassengers.size();
+
+		// Only count the waiting containers that actually fit into the train's remaining
+		// TEU-equivalent capacity. MATSim core rebuilds enteringPassengers every second and
+		// only caps it by the RAW passenger count (see PassengerAccessEgressImpl), so a train
+		// that is full in TEU terms but not in raw agent count would otherwise keep reporting
+		// cntAccess > 0, return stopTime = 1.0 forever and never depart (core departs only on
+		// stopTime == 0.0). With cntAccess == 0 the "nobody left to handle" branch below closes
+		// the doors and lets the train leave; the remaining containers wait for the next train.
+		int cntAccess = 0;
+		for (PTPassengerAgent enteringPassenger : enteringPassengers) {
+			if (queueEventHandler.hasRemainingCapacityFor(vehicle.getId(), enteringPassenger.getId())) {
+				cntAccess++;
+			}
+		}
 
 		if (!this.doorsOpen) {
 			// doors are closed
@@ -169,13 +182,26 @@ public class ContainerTransitStopHandler implements TransitStopHandler {
 
 							// next passenger can enter the veh
 
+							// Scan the FIFO queue for the first passenger that actually fits in the
+							// remaining TEU-equivalent capacity, instead of stalling everyone behind
+							// an oversized container (e.g. a FEU stuck behind a full train) forever.
+							int candidateIndex = 0;
+
 							while (this.passengersEnteringTimeFraction < 1.0) {
-								if (enteringPassengers.size() == 0) {
+								if (enteringPassengers.size() <= candidateIndex) {
 									break;
 								}
 
-								if(handler.handlePassengerEntering(enteringPassengers.get(0), vehicle, stop.getId(), now)){
-									enteringPassengers.remove(0);
+								PTPassengerAgent nextPassenger = enteringPassengers.get(candidateIndex);
+								if (!queueEventHandler.hasRemainingCapacityFor(vehicle.getId(), nextPassenger.getId())) {
+									// Doesn't fit right now -> leave it in the queue and try the next
+									// waiting passenger instead of blocking the whole stop on it.
+									candidateIndex++;
+									continue;
+								}
+
+								if(handler.handlePassengerEntering(nextPassenger, vehicle, stop.getId(), now)){
+									enteringPassengers.remove(candidateIndex);
 									this.passengersEnteringTimeFraction += personEntersTime;
 								} else {
 									break;
